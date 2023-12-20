@@ -9,7 +9,7 @@ require("dotenv").config();
     const SENDER = process.env.FIX_SENDER;
     const TARGET = process.env.FIX_TARGET;
     const Password = process.env.FIX_PASSWORD;
-
+    console.log(SENDER,TARGET,Password);
     let reconnectAttempts = 0;
     const MAX_RECONNECT_ATTEMPTS = 10000000; // Maximum number of reconnect attempts
     const RECONNECT_INTERVAL = 100; // Initial reconnect interval in milliseconds

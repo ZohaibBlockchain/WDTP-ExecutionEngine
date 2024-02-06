@@ -267,7 +267,7 @@ async function Price_conversion(inf) {
       throw new Error('Network response was not ok');
     }
     const data = await response.json(); // Assuming the response is in JSON format
-    console.log(data);
+    console.log(data , inf);
     if (inf.quoteAsset === 'USD') {
       return inf;
     }

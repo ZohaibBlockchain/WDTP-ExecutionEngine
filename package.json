@@ -1,6 +1,6 @@
 {
   "name": "WDTP Execution Engine",
-  "version": "1.18.1",
+  "version": "2.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {

@@ -52,6 +52,9 @@ export function fixClient(registerTrade) {
     };
     fixParser.connect(CONNECT_PARAMS);
 }
+
+
+
 const sendLogon = () => {
     const logon = fixParser.createMessage(
         new Field(Fields.MsgType, Messages.Logon),
@@ -67,6 +70,8 @@ const sendLogon = () => {
     fixParser.send(logon);
 };
 
+
+
 function parseFixMessage(fixMessage) {
     const fields = fixMessage.split('|');
     const result = {};
@@ -75,7 +80,6 @@ function parseFixMessage(fixMessage) {
         const [tag, value] = field.split('=');
         result[tag] = value;
     });
-
     return result;
 }
 
@@ -89,6 +93,8 @@ function checkInstrument(symbol) {
     }
     return false;
 }
+
+
 
 const handleDisconnect = (CONNECT_PARAMS) => {
     console.log('Disconnected');

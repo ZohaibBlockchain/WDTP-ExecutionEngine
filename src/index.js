@@ -91,6 +91,11 @@ process.on('uncaughtException', function (err) {
   console.log("...");
 });
 
+process.on('unhandledRejection', error => {
+  console.error('Unhandled promise rejection:', error);
+});
+
+
 process.on('TypeError', function (err) {
   Errorlogger(err.message);
   console.log("...");

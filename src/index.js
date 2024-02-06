@@ -1,4 +1,5 @@
 //Beta version 1.0.1 of WDTP...
+const fetch = require('node-fetch');
 import { fixClient } from "./fixClient";
 import { SignTrade, tradeListener, checkNetworkStatus } from "./web3";
 import express from "express";

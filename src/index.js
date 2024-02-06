@@ -125,13 +125,12 @@ async function msgHandler(msg, ws) {
       }
       case 'signOrder': {
         try {
-         
 
           inf = await Price_conversion(msg.message);
-          console.log('Warning Finish ');
+          console.log('Warning Finish');
           console.log(inf);
           if (inf != undefined) {
-            
+
             let res = await SignTrade(inf);
             ws.send(JSON.stringify({ messageType: 'signOrder', message: res }));
           } else {
@@ -262,145 +261,57 @@ async function Price_conversion(inf) {
   try {
     console.log('Warning Start ', inf);
     const response = await fetch(process.env.PriceEndPoint);
-   
+
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
+
     const data = await response.json(); // Assuming the response is in JSON format
-    console.log(data , inf);
-    if (inf.quoteAsset === 'USD') {
-      console.log('--X--');
-      return inf;
-    }
-    else if (inf.quoteAsset === 'EUR') {
-      // Find the object with the "symbol" property equal to "EURUSD"
-      const Instrument = data.find(item => item.symbol === "EURUSD");
-      const { symbol, lastUpdateTime, bid, ask } = Instrument;
-      const SendingTimeStamp = data[data.length - 1];
-      if (SendingTimeStamp - lastUpdateTime <= 10000) {
-        const askValue = parseFloat(ask);
-        const infPriceValue = parseFloat(inf.price);
-        // Check if the conversion was successful and both are valid numbers
-        if (!isNaN(askValue) && !isNaN(infPriceValue)) {
-          // Calculate the updated price in USD
-          const priceInUsd = askValue * infPriceValue;
-          // Update 'inf.price' with the new value as a string
-          console.log("Updated inf.price:", inf.price);
-          inf.price = priceInUsd.toString();
-          return inf;
+    let Instrument, symbol, lastUpdateTime, bid, ask;
+
+    switch (inf.quoteAsset) {
+      case 'USD':
+        console.log('--X--');
+        break; // No conversion needed
+      case 'EUR':
+      case 'GBP':
+      case 'CAD':
+      case 'JPY':
+      case 'CHF':
+        Instrument = data.find(item => item.symbol === `${inf.quoteAsset}USD`);
+        if (Instrument) {
+          ({ symbol, lastUpdateTime, bid, ask } = Instrument);
+          const SendingTimeStamp = Date.now(); // Assuming you need the current timestamp
+          if (SendingTimeStamp - lastUpdateTime <= 10000) {
+            const askValue = parseFloat(ask);
+            const infPriceValue = parseFloat(inf.price);
+            if (!isNaN(askValue) && !isNaN(infPriceValue)) {
+              inf.price = (askValue * infPriceValue).toString();
+              console.log("Updated inf.price:", inf.price); // Correct placement to log the updated price
+            } else {
+              console.log("Invalid numeric values for 'ask' or 'inf.price'.");
+              return undefined;
+            }
+          } else {
+            console.log('Expired Price');
+            return undefined;
+          }
         } else {
-          console.log("Invalid numeric values for 'ask' or 'inf.price'.");
-          return undefined
+          console.log(`No instrument found for ${inf.quoteAsset}`);
+          return undefined;
         }
-      } else {
-        console.log('Expired Price');
+        break;
+      default:
+        console.log(`Unsupported quoteAsset: ${inf.quoteAsset}`);
         return undefined;
-      }
-    }
-    else if (inf.quoteAsset === 'GBP') {
-      // Find the object with the "symbol" property equal to "EURUSD"
-      const Instrument = data.find(item => item.symbol === "GBPUSD");
-      const { symbol, lastUpdateTime, bid, ask } = Instrument;
-      const SendingTimeStamp = data[data.length - 1];
-      if (SendingTimeStamp - lastUpdateTime <= 10000) {
-        const askValue = parseFloat(ask);
-        const infPriceValue = parseFloat(inf.price);
-        // Check if the conversion was successful and both are valid numbers
-        if (!isNaN(askValue) && !isNaN(infPriceValue)) {
-          // Calculate the updated price in USD
-          const priceInUsd = askValue * infPriceValue;
-          // Update 'inf.price' with the new value as a string
-          console.log("Updated inf.price:", inf.price);
-          inf.price = priceInUsd.toString();
-          return inf;
-        } else {
-          console.log("Invalid numeric values for 'ask' or 'inf.price'.");
-          return undefined
-        }
-      } else {
-        console.log('Expired Price');
-        return undefined;
-      }
-    }
-    else if (inf.quoteAsset === 'CAD') {
-      // Find the object with the "symbol" property equal to "EURUSD"
-      const Instrument = data.find(item => item.symbol === "CADUSD");
-      const { symbol, lastUpdateTime, bid, ask } = Instrument;
-      const SendingTimeStamp = data[data.length - 1];
-      if (SendingTimeStamp - lastUpdateTime <= 10000) {
-        const askValue = parseFloat(ask);
-        const infPriceValue = parseFloat(inf.price);
-        // Check if the conversion was successful and both are valid numbers
-        if (!isNaN(askValue) && !isNaN(infPriceValue)) {
-          // Calculate the updated price in USD
-          const priceInUsd = askValue * infPriceValue;
-          // Update 'inf.price' with the new value as a string
-          console.log("Updated inf.price:", inf.price);
-          inf.price = priceInUsd.toString();
-          return inf;
-        } else {
-          console.log("Invalid numeric values for 'ask' or 'inf.price'.");
-          return undefined
-        }
-      } else {
-        console.log('Expired Price');
-        return undefined;
-      }
-    }
-    else if (inf.quoteAsset === 'JPY') {
-      // Find the object with the "symbol" property equal to "EURUSD"
-      const Instrument = data.find(item => item.symbol === "JPYUSD");
-      const { symbol, lastUpdateTime, bid, ask } = Instrument;
-      const SendingTimeStamp = data[data.length - 1];
-      if (SendingTimeStamp - lastUpdateTime <= 10000) {
-        const askValue = parseFloat(ask);
-        const infPriceValue = parseFloat(inf.price);
-        // Check if the conversion was successful and both are valid numbers
-        if (!isNaN(askValue) && !isNaN(infPriceValue)) {
-          // Calculate the updated price in USD
-          const priceInUsd = askValue * infPriceValue;
-          // Update 'inf.price' with the new value as a string
-          console.log("Updated inf.price:", inf.price);
-          inf.price = priceInUsd.toString();
-          return inf;
-        } else {
-          console.log("Invalid numeric values for 'ask' or 'inf.price'.");
-          return undefined
-        }
-      } else {
-        console.log('Expired Price');
-        return undefined;
-      }
-    }
-    else if (inf.quoteAsset === 'CHF') {
-      // Find the object with the "symbol" property equal to "EURUSD"
-      const Instrument = data.find(item => item.symbol === "CHFUSD");
-      const { symbol, lastUpdateTime, bid, ask } = Instrument;
-      const SendingTimeStamp = data[data.length - 1];
-      if (SendingTimeStamp - lastUpdateTime <= 10000) {
-        const askValue = parseFloat(ask);
-        const infPriceValue = parseFloat(inf.price);
-        // Check if the conversion was successful and both are valid numbers
-        if (!isNaN(askValue) && !isNaN(infPriceValue)) {
-          // Calculate the updated price in USD
-          const priceInUsd = askValue * infPriceValue;
-          // Update 'inf.price' with the new value as a string
-          console.log("Updated inf.price:", inf.price);
-          inf.price = priceInUsd.toString();
-          return inf;
-        } else {
-          console.log("Invalid numeric values for 'ask' or 'inf.price'.");
-          return undefined
-        }
-      } else {
-        console.log('Expired Price');
-        return undefined;
-      }
     }
 
+    return inf; // Return the possibly updated inf object
+
   } catch (error) {
-    // Handle any errors that occurred during the fetch
     console.error('Fetch error:', error);
     return undefined;
   }
 }
+
+

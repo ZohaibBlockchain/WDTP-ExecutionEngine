@@ -304,7 +304,7 @@ async function Price_conversion(inf) {
         console.log(`Unsupported quoteAsset: ${inf.quoteAsset}`);
         return undefined;
     }
-    console.log(inf);
+    console.log('......: ',inf);
     return inf; // Return the possibly updated inf object
   } catch (error) {
     console.error('Fetch error:', error);

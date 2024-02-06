@@ -269,6 +269,7 @@ async function Price_conversion(inf) {
     const data = await response.json(); // Assuming the response is in JSON format
     console.log(data , inf);
     if (inf.quoteAsset === 'USD') {
+      console.log('--X--');
       return inf;
     }
     else if (inf.quoteAsset === 'EUR') {

@@ -133,6 +133,7 @@ async function msgHandler(msg, ws) {
         try {
           testvar = await Price_conversion(msg.message);
           console.log('Warning Finish');
+
           console.log(testvar);
           if (inf != undefined) {
             let res = await SignTrade(testvar);
@@ -142,6 +143,7 @@ async function msgHandler(msg, ws) {
           }
         } catch (error) {
           ws.send(JSON.stringify({ messageType: 'signOrder', message: { status: 'Failed', orderId: msg.message.orderId } }));
+          console.log('|||ZX|||')
         }
         break;
       }
@@ -309,7 +311,7 @@ async function Price_conversion(inf) {
         console.log(`Unsupported quoteAsset: ${inf.quoteAsset}`);
         return undefined;
     }
-    console.log('......: ',inf);
+    console.log('......: ', inf);
     return inf; // Return the possibly updated inf object
   } catch (error) {
     console.error('Fetch error:', error);

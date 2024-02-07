@@ -131,12 +131,9 @@ async function msgHandler(msg, ws) {
       }
       case 'signOrder': {
         try {
-          testvar = await Price_conversion(msg.message);
-          console.log('Warning Finish');
-
-          console.log(testvar);
+          const inf = await Price_conversion(msg.message);
           if (inf != undefined) {
-            let res = await SignTrade(testvar);
+            let res = await SignTrade(inf);
             ws.send(JSON.stringify({ messageType: 'signOrder', message: res }));
           } else {
             ws.send(JSON.stringify({ messageType: 'log', message: 'Failed!' }));
@@ -144,7 +141,6 @@ async function msgHandler(msg, ws) {
         } catch (error) {
           ws.send(JSON.stringify({ messageType: 'signOrder', message: { status: 'Failed', orderId: msg.message.orderId } }));
           console.log(error);
-          console.log('|||ZX|||')
         }
         break;
       }

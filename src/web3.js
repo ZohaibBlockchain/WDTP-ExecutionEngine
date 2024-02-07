@@ -219,7 +219,7 @@ export async function getInstrumentAddress(symbol) {
 
 export async function SignTrade(inf) {
   try {
-
+    console.log(inf,' Yeh')
     let _token = await getInstrumentAddress(inf.symbol);
 
     let _blockRange = await (provider.getBlockNumber()) + blockRange__;//Trade will be valid for the next 5 block

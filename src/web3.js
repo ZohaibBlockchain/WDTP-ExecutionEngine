@@ -219,11 +219,8 @@ export async function getInstrumentAddress(symbol) {
 
 export async function SignTrade(inf) {
   try {
-    console.log(inf,' Yeh')
     let _token = await getInstrumentAddress(inf.symbol);
-
     let _blockRange = await (provider.getBlockNumber()) + blockRange__;//Trade will be valid for the next 5 block
-
     const _tradeId = inf.orderId;
     // Convert price to the token's base unit (wei)
     let _price = ethers.utils.parseUnits(inf.price.toString(), DECIMAL).toString();

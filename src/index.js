@@ -289,7 +289,7 @@ async function Price_conversion(inf) {
             const askValue = parseFloat(ask);
             const infPriceValue = parseFloat(inf.price);
             if (!isNaN(askValue) && !isNaN(infPriceValue)) {
-              inf.price = (askValue * infPriceValue).toString();
+              inf.price = (askValue * infPriceValue);
               console.log("Updated inf.price:", inf.price); // Correct placement to log the updated price
             } else {
               console.log("Invalid numeric values for 'ask' or 'inf.price'.");

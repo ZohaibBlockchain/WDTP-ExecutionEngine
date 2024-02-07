@@ -143,6 +143,7 @@ async function msgHandler(msg, ws) {
           }
         } catch (error) {
           ws.send(JSON.stringify({ messageType: 'signOrder', message: { status: 'Failed', orderId: msg.message.orderId } }));
+          console.log(error);
           console.log('|||ZX|||')
         }
         break;

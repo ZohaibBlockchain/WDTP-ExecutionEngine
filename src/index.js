@@ -263,19 +263,15 @@ function stringToHash(str) {
 
 async function Price_conversion(inf) {
   try {
-    console.log('Warning Start ', inf);
     const response = await fetch(process.env.PriceEndPoint);
-
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-
     const data = await response.json(); // Assuming the response is in JSON format
     let Instrument, symbol, lastUpdateTime, bid, ask;
 
     switch (inf.quoteAsset) {
       case 'USD':
-        console.log('--X--');
         break; // No conversion needed
       case 'EUR':
       case 'GBP':

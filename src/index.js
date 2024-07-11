@@ -54,7 +54,6 @@ mongoose.connect(process.env.DBKEY, { useNewUrlParser: true })
   .then(() => {
     const envport = process.env.SERVERPORT;
     const app = express();
-
     app.use(router);
 
     const options = {
@@ -104,7 +103,7 @@ process.on('TypeError', function (err) {
 
 
 //-----------functions--------
-const updateSpeed = 1000;
+const updateSpeed = 500;
 async function w3Engine() {
   await checkNetworkStatus();
   let e = await ExeTrade();
